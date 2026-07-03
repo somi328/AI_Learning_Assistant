@@ -1,0 +1,19 @@
+venv/
+__pycache__/
+*.pyc
+.env
+outputs/
+
+# VS Code
+.vscode/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Large ML model files
+*.safetensors
+*.keras
+*.h5
+
+# Logs
+*.log
