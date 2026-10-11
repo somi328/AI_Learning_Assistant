@@ -6,3 +6,4 @@ torch
 transformers
 python-dotenv
 google-genai
+torchvision
