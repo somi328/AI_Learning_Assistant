@@ -17,7 +17,7 @@ import torch
 # -----------------------------
 # Load Dataset
 # -----------------------------
-df = pd.read_pickle("data/raw/merged_training.pkl")
+df = pd.read_pickle("5_Project_Development_Phase/data/raw/merged_training.pkl")
 
 print("Dataset Loaded Successfully!")
 print(df.head())
@@ -125,8 +125,6 @@ training_args = TrainingArguments(
     eval_strategy="epoch",
 
     save_strategy="epoch",
-
-    logging_dir="models/bert/logs",
 
     logging_steps=100,
 
