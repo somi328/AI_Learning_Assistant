@@ -201,22 +201,42 @@ Maximum 120 words.
         st.info(gemini_response)
 st.write("---")
 st.subheader("📜 Session History")
-if os.path.exists("history.csv"):
-    history_df = pd.read_csv("history.csv")
-    history_df = history_df.tail(10)
-    history_df["AI Response"] = history_df["AI Response"].str[:60] + "..."
-    st.dataframe(history_df, use_container_width=True)
-    col1, col2 = st.columns(2)
+
+history_path = os.path.join(os.path.dirname(__file__), "history.csv")
+
+if not os.path.exists(history_path):
+    pd.DataFrame(columns=[
+        "Date", "Name", "Field", "Problem",
+        "Emotion", "Confidence", "AI Response"
+    ]).to_csv(history_path, index=False)
+
+history_df = pd.read_csv(history_path)
+
+if not history_df.empty:
+    display_df = history_df.tail(10).copy()
+    display_df["AI Response"] = (
+        display_df["AI Response"].fillna("").str[:60] + "..."
+    )
+    st.dataframe(display_df, use_container_width=True)
+else:
+    st.info("No session history available yet.")
+
+col1, col2 = st.columns(2)
+
 with col1:
-    with open("history.csv", "rb") as file:
+    with open(history_path, "rb") as file:
         st.download_button(
             "📥 Download History",
             file,
             "history.csv",
             "text/csv"
         )
+
 with col2:
     if st.button("🗑 Clear History"):
-        os.remove("history.csv")
+        pd.DataFrame(columns=[
+            "Date", "Name", "Field", "Problem",
+            "Emotion", "Confidence", "AI Response"
+        ]).to_csv(history_path, index=False)
         st.success("History Cleared Successfully!")
         st.rerun()
