@@ -31,19 +31,18 @@ if "response" not in st.session_state:
 @st.cache_resource
 def load_model():
 
-    model = BertForSequenceClassification.from_pretrained(
-        "models/bert"
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+
+    model_dir = os.path.join(base_dir, "models", "bert")
+    encoder_path = os.path.join(
+        base_dir, "models", "bilstm", "label_encoder.pkl"
     )
 
-    tokenizer = BertTokenizer.from_pretrained(
-        "models/bert"
-    )
+    model = BertForSequenceClassification.from_pretrained(model_dir)
 
-    with open(
-        "models/bilstm/label_encoder.pkl",
-        "rb"
-    ) as f:
+    tokenizer = BertTokenizer.from_pretrained(model_dir)
 
+    with open(encoder_path, "rb") as f:
         label_encoder = pickle.load(f)
 
     model.eval()
